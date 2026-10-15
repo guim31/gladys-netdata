@@ -1,0 +1,475 @@
+{
+  "version": "v2.12.1",
+  "uid": "0c3a6f1e-5b2d-4c8a-9e7f-1a2b3c4d5e01",
+  "hosts-available": 2,
+  "mirrored_hosts": ["nd-parent", "nd-child"],
+  "mirrored_hosts_status": [
+    {
+      "hostname": "nd-parent",
+      "hops": 0,
+      "reachable": true,
+      "guid": "0c3a6f1e-5b2d-4c8a-9e7f-1a2b3c4d5e01",
+      "node_id": null,
+      "claim_id": null
+    },
+    {
+      "hostname": "nd-child",
+      "hops": 1,
+      "reachable": true,
+      "guid": "0c3a6f1e-5b2d-4c8a-9e7f-1a2b3c4d5e02",
+      "node_id": null,
+      "claim_id": null
+    }
+  ],
+  "alarms": {
+    "normal": 74,
+    "warning": 2,
+    "critical": 0
+  },
+  "os_name": "unknown",
+  "os_id": "unknown",
+  "os_id_like": "unknown",
+  "os_version": "unknown",
+  "os_version_id": "unknown",
+  "os_detection": "unknown",
+  "cores_total": "4",
+  "total_disk_space": "512110190592",
+  "cpu_freq": "800000000",
+  "ram_total": "16537718784",
+  "container_os_name": "Debian GNU/Linux",
+  "container_os_id": "debian",
+  "container_os_id_like": "unknown",
+  "container_os_version": "13 (trixie)",
+  "container_os_version_id": "13",
+  "container_os_detection": "/etc/os-release",
+  "is_k8s_node": "false",
+  "kernel_name": "Linux",
+  "kernel_version": "6.8.0-138-generic",
+  "architecture": "x86_64",
+  "virtualization": "none",
+  "virt_detection": "systemd-detect-virt",
+  "container": "docker",
+  "container_detection": "systemd-detect-virt",
+  "cloud_provider_type": "unknown",
+  "cloud_instance_type": "unknown",
+  "cloud_instance_region": "unknown",
+  "host_labels": {
+    "_os": "linux",
+    "_abbrev_timezone": "UTC",
+    "_hostname": "nd-parent",
+    "_has_unstable_connection": "false",
+    "_aclk_available": "true",
+    "_is_ephemeral": "false",
+    "_mqtt_version": "5",
+    "_aclk_ng_new_cloud_protocol": "true",
+    "_aclk_proxy": "none",
+    "_cloud_instance_type": "unknown",
+    "_system_cpu_model": "Intel(R) N100",
+    "_system_ram_total": "16537718784",
+    "_virt_detection": "systemd-detect-virt",
+    "_system_cpu_freq": "800000000",
+    "_net_default_iface": "eth0",
+    "_net_default_iface_ip": "192.0.2.2",
+    "_cloud_provider_type": "unknown",
+    "_timezone": "Etc/UTC",
+    "_virtualization": "none",
+    "_container": "docker",
+    "_container_detection": "systemd-detect-virt",
+    "_kernel_version": "6.8.0-138-generic",
+    "_system_cores": "4",
+    "_system_disk_space": "512110190592",
+    "_architecture": "x86_64",
+    "_is_k8s_node": "false",
+    "_install_type": "oci",
+    "_prebuilt_arch": "amd64",
+    "_os_version": "unknown",
+    "_cloud_instance_region": "unknown",
+    "_os_name": "unknown",
+    "_net_default_iface_detection": "procfs",
+    "_hw_product_id": "Mini PC",
+    "_hw_product_name": "Mini PC",
+    "_hw_sys_vendor": "Example",
+    "_hw_product_type": "server",
+    "_is_parent": "true"
+  },
+  "functions": {
+    "netdata-streaming": {
+      "help": "Shows real-time streaming connections and replication status between parent and child nodes, including connection health, data flow metrics, and ML status.",
+      "timeout": 10,
+      "version": 0,
+      "options": ["GLOBAL"],
+      "tags": "top",
+      "access": ["signed-in", "same-space", "sensitive-data"],
+      "priority": 101
+    },
+    "topology:streaming": {
+      "help": "Shows streaming topology relations across Netdata agents, including directional parent/child links and transport metadata.",
+      "timeout": 10,
+      "version": 0,
+      "options": ["GLOBAL"],
+      "tags": "top",
+      "access": ["signed-in", "same-space", "sensitive-data"],
+      "priority": 101
+    },
+    "netdata-api-calls": {
+      "help": "Monitors active and recent Netdata API requests with transaction details, duration, and response sizes.",
+      "timeout": 10,
+      "version": 0,
+      "options": ["GLOBAL"],
+      "tags": "top",
+      "access": ["signed-in", "same-space", "sensitive-data"],
+      "priority": 101
+    },
+    "netdata-metrics-cardinality": {
+      "help": "Displays metrics cardinality statistics showing distribution of instances and time-series across contexts and nodes. To change grouping, append parameter to function name: 'netdata-metrics-cardinality' (default, group by context) or 'netdata-metrics-cardinality group:by-node' (group by node).",
+      "timeout": 10,
+      "version": 0,
+      "options": ["GLOBAL"],
+      "tags": "top",
+      "access": ["anonymous-data"],
+      "priority": 101
+    },
+    "mount-points": {
+      "help": "Displays filesystem mount points with space utilization, available capacity, and inode usage statistics.",
+      "timeout": 10,
+      "version": 0,
+      "options": ["GLOBAL"],
+      "tags": "top",
+      "access": ["anonymous-data"],
+      "priority": 100
+    },
+    "network-interfaces": {
+      "help": "Shows real-time network interface performance including traffic rates, packet counts, drops, and link status.",
+      "timeout": 10,
+      "version": 0,
+      "options": ["GLOBAL"],
+      "tags": "top",
+      "access": ["anonymous-data"],
+      "priority": 100
+    },
+    "containers-vms": {
+      "help": "Lists active containers and cgroups with resource usage including CPU, memory, disk I/O, and network traffic.",
+      "timeout": 10,
+      "version": 0,
+      "options": ["GLOBAL"],
+      "tags": "top",
+      "access": ["anonymous-data"],
+      "priority": 50
+    },
+    "systemd-services": {
+      "help": "Shows systemd service cgroups with their process counts and resource consumption (CPU, memory, I/O).",
+      "timeout": 10,
+      "version": 0,
+      "options": ["GLOBAL"],
+      "tags": "top",
+      "access": ["anonymous-data"],
+      "priority": 33
+    },
+    "systemd-list-units": {
+      "help": "View the status of systemd units",
+      "timeout": 30,
+      "version": 0,
+      "options": ["GLOBAL"],
+      "tags": "top",
+      "access": ["signed-in", "same-space", "sensitive-data"],
+      "priority": 100
+    },
+    "systemd-journal": {
+      "help": "View, search and analyze systemd journal entries.",
+      "timeout": 60,
+      "version": 0,
+      "options": ["GLOBAL"],
+      "tags": "logs",
+      "access": ["signed-in", "same-space", "sensitive-data"],
+      "priority": 100
+    },
+    "flows:netflow": {
+      "help": "NetFlow/IPFIX/sFlow flow analysis data",
+      "timeout": 30,
+      "version": 4,
+      "options": ["GLOBAL"],
+      "tags": "flows",
+      "access": ["signed-in", "same-space", "sensitive-data"],
+      "priority": 200
+    },
+    "otel-logs": {
+      "help": "Query OpenTelemetry logs",
+      "timeout": 10,
+      "version": 1,
+      "options": ["GLOBAL"],
+      "tags": "logs",
+      "access": ["signed-in", "same-space", "sensitive-data"],
+      "priority": 200
+    },
+    "otel-traces": {
+      "help": "Query OpenTelemetry traces",
+      "timeout": 10,
+      "version": 1,
+      "options": ["GLOBAL"],
+      "tags": "traces",
+      "access": ["signed-in", "same-space", "sensitive-data"],
+      "priority": 200
+    },
+    "processes": {
+      "help": "Provides detailed process information including CPU usage, memory consumption, I/O statistics, file descriptors, page faults, and parent-child relationships (PPID) for all processes including those in containers.",
+      "timeout": 10,
+      "version": 0,
+      "options": ["GLOBAL"],
+      "tags": "top",
+      "access": ["signed-in", "same-space", "sensitive-data"],
+      "priority": 10
+    },
+    "block-devices": {
+      "help": "Displays block device I/O statistics including read/write throughput, operations, latency, and utilization.",
+      "timeout": 10,
+      "version": 0,
+      "options": ["GLOBAL"],
+      "tags": "top",
+      "access": ["anonymous-data"],
+      "priority": 100
+    },
+    "sensors": {
+      "help": "Lists all hardware sensors discovered on this host, with their current readings.",
+      "timeout": 10,
+      "version": 0,
+      "options": ["GLOBAL"],
+      "tags": "top",
+      "access": ["anonymous-data"],
+      "priority": 100
+    },
+    "topology:network-connections": {
+      "help": "Shows live network-connections topology with self/process/endpoint actors and ownership/socket links.",
+      "timeout": 60,
+      "version": 0,
+      "options": ["GLOBAL"],
+      "tags": "top",
+      "access": ["signed-in", "same-space", "sensitive-data"],
+      "priority": 100
+    },
+    "network-connections": {
+      "help": "Shows active network connections with protocol details, states, addresses, ports, and performance metrics.",
+      "timeout": 60,
+      "version": 0,
+      "options": ["GLOBAL"],
+      "tags": "top",
+      "access": ["signed-in", "same-space", "sensitive-data"],
+      "priority": 100
+    },
+    "dns-queries": {
+      "help": "Linux eBPF DNS query and response statistics (UDP/TCP, IPv4/IPv6)",
+      "timeout": 10,
+      "version": 0,
+      "options": ["GLOBAL"],
+      "tags": "top",
+      "access": ["signed-in", "same-space", "sensitive-data"],
+      "priority": 100
+    },
+    "snmp:topology:snmp": {
+      "help": "SNMP Layer-2 topology and neighbor discovery data",
+      "timeout": 60,
+      "version": 3,
+      "options": ["GLOBAL"],
+      "tags": "top",
+      "access": ["signed-in", "same-space", "sensitive-data"],
+      "priority": 100
+    },
+    "topology:snmp": {
+      "help": "SNMP Layer-2 topology and neighbor discovery data",
+      "timeout": 60,
+      "version": 3,
+      "options": ["GLOBAL"],
+      "tags": "top",
+      "access": ["signed-in", "same-space", "sensitive-data"],
+      "priority": 100
+    }
+  },
+  "collectors": [
+    {
+      "plugin": "idlejitter.plugin",
+      "module": ""
+    },
+    {
+      "plugin": "statsd.plugin",
+      "module": "stats"
+    },
+    {
+      "plugin": "netflow-plugin",
+      "module": ""
+    },
+    {
+      "plugin": "netdata",
+      "module": "pulse"
+    },
+    {
+      "plugin": "netdata",
+      "module": "stats"
+    },
+    {
+      "plugin": "go.d",
+      "module": "jobmgr"
+    },
+    {
+      "plugin": "scripts.d",
+      "module": "jobmgr"
+    },
+    {
+      "plugin": "ml.plugin",
+      "module": "training"
+    },
+    {
+      "plugin": "ml.plugin",
+      "module": "detection"
+    },
+    {
+      "plugin": "apps.plugin",
+      "module": ""
+    },
+    {
+      "plugin": "diskspace.plugin",
+      "module": ""
+    },
+    {
+      "plugin": "cgroups.plugin",
+      "module": "/sys/fs/cgroup"
+    },
+    {
+      "plugin": "proc.plugin",
+      "module": "/proc/net/dev"
+    },
+    {
+      "plugin": "proc.plugin",
+      "module": "/proc/stat"
+    },
+    {
+      "plugin": "proc.plugin",
+      "module": "/proc/uptime"
+    },
+    {
+      "plugin": "proc.plugin",
+      "module": "/proc/loadavg"
+    },
+    {
+      "plugin": "proc.plugin",
+      "module": "/proc/sys/fs/file-nr"
+    },
+    {
+      "plugin": "proc.plugin",
+      "module": "/proc/sys/kernel/random/entropy_avail"
+    },
+    {
+      "plugin": "proc.plugin",
+      "module": "/proc/pressure"
+    },
+    {
+      "plugin": "proc.plugin",
+      "module": "/proc/softirqs"
+    },
+    {
+      "plugin": "proc.plugin",
+      "module": "/proc/vmstat"
+    },
+    {
+      "plugin": "proc.plugin",
+      "module": "/proc/meminfo"
+    },
+    {
+      "plugin": "proc.plugin",
+      "module": "/sys/devices/system/edac/mc"
+    },
+    {
+      "plugin": "proc.plugin",
+      "module": "/sys/devices/pci/aer"
+    },
+    {
+      "plugin": "proc.plugin",
+      "module": "/proc/net/sockstat"
+    },
+    {
+      "plugin": "proc.plugin",
+      "module": "/proc/net/sockstat6"
+    },
+    {
+      "plugin": "proc.plugin",
+      "module": "/proc/net/netstat"
+    },
+    {
+      "plugin": "proc.plugin",
+      "module": "/proc/net/softnet_stat"
+    },
+    {
+      "plugin": "proc.plugin",
+      "module": "/proc/net/stat/nf_conntrack"
+    },
+    {
+      "plugin": "proc",
+      "module": "/proc/diskstats"
+    },
+    {
+      "plugin": "proc.plugin",
+      "module": "/proc/diskstats"
+    },
+    {
+      "plugin": "proc.plugin",
+      "module": "ipc"
+    },
+    {
+      "plugin": "debugfs",
+      "module": "sensors"
+    },
+    {
+      "plugin": "network-viewer.plugin",
+      "module": ""
+    },
+    {
+      "plugin": "timex.plugin",
+      "module": ""
+    },
+    {
+      "plugin": "go.d",
+      "module": "chartengine"
+    },
+    {
+      "plugin": "go.d",
+      "module": "snmp_topology"
+    }
+  ],
+  "cloud-enabled": true,
+  "cloud-available": true,
+  "agent-claimed": false,
+  "aclk-available": false,
+  "memory-mode": "dbengine",
+  "multidb-disk-quota": 1024,
+  "page-cache-size": 32,
+  "web-enabled": true,
+  "stream-enabled": false,
+  "stream-compression": false,
+  "https-enabled": true,
+  "buildinfo": "Netdata Cloud|Stream Compression|Machine Learning|allocator|dbengine|Native HTTPS|TLS Host Verification|zlib|protobuf|JSON-C|libcap|libcrypto|libyaml|libmnl|apps|cgroup Network Tracking|debugfs|IPMI|NETWORK-VIEWER|SYSTEMD-JOURNAL|perf|slabinfo|MongoDB|Prometheus Remote Write|StreamParent",
+  "release-channel": "nightly",
+  "notification-methods": null,
+  "exporting-enabled": false,
+  "exporting-connectors": "",
+  "allmetrics-prometheus-used": 0,
+  "allmetrics-shell-used": 0,
+  "allmetrics-json-used": 6,
+  "dashboard-used": 0,
+  "charts-count": 0,
+  "metrics-count": 0,
+  "ml-info": {
+    "version": 1,
+    "enabled": true,
+    "training-window": 21600,
+    "min-training-window": 900,
+    "max-training-vectors": 1440,
+    "max-samples-to-smooth": 3,
+    "train-every": 10800,
+    "diff-n": 1,
+    "lag-n": 5,
+    "max-kmeans-iters": 1000,
+    "dimension-anomaly-score-threshold": 0.99,
+    "anomaly-detection-grouping-method": "average",
+    "anomaly-detection-query-duration": 300,
+    "hosts-to-skip": "!*",
+    "charts-to-skip": "anomaly_detection.* netdata.*"
+  }
+}

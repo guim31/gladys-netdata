@@ -1,8 +1,8 @@
 {
-  "name": "gladys-integration-template-js",
+  "name": "gladys-netdata",
   "version": "1.0.0",
   "private": true,
-  "description": "Official starter template to build an external integration for Gladys Assistant with the JavaScript SDK.",
+  "description": "Netdata integration for Gladys Assistant: nodes, metrics and alarms of your Netdata agents.",
   "type": "module",
   "main": "index.js",
   "scripts": {

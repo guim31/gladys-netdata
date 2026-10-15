@@ -1,0 +1,527 @@
+{
+  "disk_space./": {
+    "name": "disk_space./",
+    "family": "/",
+    "context": "disk.space",
+    "units": "GiB",
+    "last_updated": 1792107505,
+    "dimensions": {
+      "avail": {
+        "name": "avail",
+        "value": 93.3856392
+      },
+      "used": {
+        "name": "used",
+        "value": 350.6663933
+      },
+      "reserved_for_root": {
+        "name": "reserved for root",
+        "value": 23.8375473
+      }
+    }
+  },
+  "system.net": {
+    "name": "system.net",
+    "family": "network",
+    "context": "system.net",
+    "units": "kilobits/s",
+    "last_updated": 1792107505,
+    "dimensions": {
+      "InOctets": {
+        "name": "received",
+        "value": 0.0
+      },
+      "OutOctets": {
+        "name": "sent",
+        "value": 0.0
+      }
+    }
+  },
+  "system.cpu": {
+    "name": "system.cpu",
+    "family": "cpu",
+    "context": "system.cpu",
+    "units": "percentage",
+    "last_updated": 1792107505,
+    "dimensions": {
+      "guest_nice": {
+        "name": "guest_nice",
+        "value": 0.0
+      },
+      "guest": {
+        "name": "guest",
+        "value": 0.0
+      },
+      "steal": {
+        "name": "steal",
+        "value": 0.0
+      },
+      "softirq": {
+        "name": "softirq",
+        "value": 1.7766497
+      },
+      "irq": {
+        "name": "irq",
+        "value": 0.0
+      },
+      "user": {
+        "name": "user",
+        "value": 28.680203
+      },
+      "system": {
+        "name": "system",
+        "value": 4.3147208
+      },
+      "nice": {
+        "name": "nice",
+        "value": 0.2538071
+      },
+      "iowait": {
+        "name": "iowait",
+        "value": 1.2690355
+      },
+      "idle": {
+        "name": "idle",
+        "value": 63.7055838
+      }
+    }
+  },
+  "system.uptime": {
+    "name": "system.uptime",
+    "family": "uptime",
+    "context": "system.uptime",
+    "units": "seconds",
+    "last_updated": 1792107505,
+    "dimensions": {
+      "uptime": {
+        "name": "uptime",
+        "value": 619474.691
+      }
+    }
+  },
+  "system.load": {
+    "name": "system.load",
+    "family": "load",
+    "context": "system.load",
+    "units": "load",
+    "last_updated": 1792107505,
+    "dimensions": {
+      "load1": {
+        "name": "load1",
+        "value": 1.85
+      },
+      "load5": {
+        "name": "load5",
+        "value": 1.83
+      },
+      "load15": {
+        "name": "load15",
+        "value": 1.48
+      }
+    }
+  },
+  "system.ram": {
+    "name": "system.ram",
+    "family": "ram",
+    "context": "system.ram",
+    "units": "MiB",
+    "last_updated": 1792107505,
+    "dimensions": {
+      "free": {
+        "name": "free",
+        "value": 235.4804688
+      },
+      "used": {
+        "name": "used",
+        "value": 7384.5429688
+      },
+      "cached": {
+        "name": "cached",
+        "value": 7592.5664062
+      },
+      "buffers": {
+        "name": "buffers",
+        "value": 559.0078125
+      }
+    }
+  },
+  "system.io": {
+    "name": "system.io",
+    "family": "disk",
+    "context": "system.io",
+    "units": "KiB/s",
+    "last_updated": 1792107505,
+    "dimensions": {
+      "in": {
+        "name": "reads",
+        "value": 0.0
+      },
+      "out": {
+        "name": "writes",
+        "value": 0.0
+      }
+    }
+  },
+  "sensors.temperature_iwlwifi_1-virtual-0_temp1_alarm": {
+    "name": "sensors.temperature_iwlwifi_1-virtual-0_temp1_alarm",
+    "family": "Temperature",
+    "context": "system.hw.sensor.temperature.alarm",
+    "units": "status",
+    "last_updated": 1792107505,
+    "dimensions": {
+      "clear": {
+        "name": "clear",
+        "value": 1.0
+      },
+      "fault": {
+        "name": "fault",
+        "value": 0.0
+      }
+    }
+  },
+  "sensors.temperature_acpitz-acpi-0_temp1_input": {
+    "name": "sensors.temperature_acpitz-acpi-0_temp1_input",
+    "family": "Temperature",
+    "context": "system.hw.sensor.temperature.input",
+    "units": "degrees Celsius",
+    "last_updated": 1792107505,
+    "dimensions": {
+      "input": {
+        "name": "input",
+        "value": 27.8
+      }
+    }
+  },
+  "sensors.temperature_acpitz-acpi-0_temp1_alarm": {
+    "name": "sensors.temperature_acpitz-acpi-0_temp1_alarm",
+    "family": "Temperature",
+    "context": "system.hw.sensor.temperature.alarm",
+    "units": "status",
+    "last_updated": 1792107505,
+    "dimensions": {
+      "clear": {
+        "name": "clear",
+        "value": 1.0
+      },
+      "fault": {
+        "name": "fault",
+        "value": 0.0
+      }
+    }
+  },
+  "sensors.temperature_coretemp-isa-0000_temp1_Package_id_0_input": {
+    "name": "sensors.temperature_coretemp-isa-0000_temp1_Package_id_0_input",
+    "family": "Temperature",
+    "context": "system.hw.sensor.temperature.input",
+    "units": "degrees Celsius",
+    "last_updated": 1792107505,
+    "dimensions": {
+      "input": {
+        "name": "input",
+        "value": 82.0
+      }
+    }
+  },
+  "sensors.temperature_coretemp-isa-0000_temp1_Package_id_0_alarm": {
+    "name": "sensors.temperature_coretemp-isa-0000_temp1_Package_id_0_alarm",
+    "family": "Temperature",
+    "context": "system.hw.sensor.temperature.alarm",
+    "units": "status",
+    "last_updated": 1792107505,
+    "dimensions": {
+      "clear": {
+        "name": "clear",
+        "value": 1.0
+      },
+      "warning": {
+        "name": "warning",
+        "value": 0.0
+      },
+      "critical": {
+        "name": "critical",
+        "value": 0.0
+      },
+      "fault": {
+        "name": "fault",
+        "value": 0.0
+      }
+    }
+  },
+  "sensors.temperature_coretemp-isa-0000_temp2_Core_0_input": {
+    "name": "sensors.temperature_coretemp-isa-0000_temp2_Core_0_input",
+    "family": "Temperature",
+    "context": "system.hw.sensor.temperature.input",
+    "units": "degrees Celsius",
+    "last_updated": 1792107505,
+    "dimensions": {
+      "input": {
+        "name": "input",
+        "value": 81.0
+      }
+    }
+  },
+  "sensors.temperature_coretemp-isa-0000_temp2_Core_0_alarm": {
+    "name": "sensors.temperature_coretemp-isa-0000_temp2_Core_0_alarm",
+    "family": "Temperature",
+    "context": "system.hw.sensor.temperature.alarm",
+    "units": "status",
+    "last_updated": 1792107505,
+    "dimensions": {
+      "clear": {
+        "name": "clear",
+        "value": 1.0
+      },
+      "warning": {
+        "name": "warning",
+        "value": 0.0
+      },
+      "critical": {
+        "name": "critical",
+        "value": 0.0
+      },
+      "fault": {
+        "name": "fault",
+        "value": 0.0
+      }
+    }
+  },
+  "sensors.temperature_coretemp-isa-0000_temp3_Core_1_input": {
+    "name": "sensors.temperature_coretemp-isa-0000_temp3_Core_1_input",
+    "family": "Temperature",
+    "context": "system.hw.sensor.temperature.input",
+    "units": "degrees Celsius",
+    "last_updated": 1792107505,
+    "dimensions": {
+      "input": {
+        "name": "input",
+        "value": 81.0
+      }
+    }
+  },
+  "sensors.temperature_coretemp-isa-0000_temp3_Core_1_alarm": {
+    "name": "sensors.temperature_coretemp-isa-0000_temp3_Core_1_alarm",
+    "family": "Temperature",
+    "context": "system.hw.sensor.temperature.alarm",
+    "units": "status",
+    "last_updated": 1792107505,
+    "dimensions": {
+      "clear": {
+        "name": "clear",
+        "value": 1.0
+      },
+      "warning": {
+        "name": "warning",
+        "value": 0.0
+      },
+      "critical": {
+        "name": "critical",
+        "value": 0.0
+      },
+      "fault": {
+        "name": "fault",
+        "value": 0.0
+      }
+    }
+  },
+  "sensors.temperature_coretemp-isa-0000_temp4_Core_2_input": {
+    "name": "sensors.temperature_coretemp-isa-0000_temp4_Core_2_input",
+    "family": "Temperature",
+    "context": "system.hw.sensor.temperature.input",
+    "units": "degrees Celsius",
+    "last_updated": 1792107505,
+    "dimensions": {
+      "input": {
+        "name": "input",
+        "value": 81.0
+      }
+    }
+  },
+  "sensors.temperature_coretemp-isa-0000_temp4_Core_2_alarm": {
+    "name": "sensors.temperature_coretemp-isa-0000_temp4_Core_2_alarm",
+    "family": "Temperature",
+    "context": "system.hw.sensor.temperature.alarm",
+    "units": "status",
+    "last_updated": 1792107505,
+    "dimensions": {
+      "clear": {
+        "name": "clear",
+        "value": 1.0
+      },
+      "warning": {
+        "name": "warning",
+        "value": 0.0
+      },
+      "critical": {
+        "name": "critical",
+        "value": 0.0
+      },
+      "fault": {
+        "name": "fault",
+        "value": 0.0
+      }
+    }
+  },
+  "sensors.temperature_coretemp-isa-0000_temp5_Core_3_input": {
+    "name": "sensors.temperature_coretemp-isa-0000_temp5_Core_3_input",
+    "family": "Temperature",
+    "context": "system.hw.sensor.temperature.input",
+    "units": "degrees Celsius",
+    "last_updated": 1792107505,
+    "dimensions": {
+      "input": {
+        "name": "input",
+        "value": 81.0
+      }
+    }
+  },
+  "sensors.temperature_coretemp-isa-0000_temp5_Core_3_alarm": {
+    "name": "sensors.temperature_coretemp-isa-0000_temp5_Core_3_alarm",
+    "family": "Temperature",
+    "context": "system.hw.sensor.temperature.alarm",
+    "units": "status",
+    "last_updated": 1792107505,
+    "dimensions": {
+      "clear": {
+        "name": "clear",
+        "value": 1.0
+      },
+      "warning": {
+        "name": "warning",
+        "value": 0.0
+      },
+      "critical": {
+        "name": "critical",
+        "value": 0.0
+      },
+      "fault": {
+        "name": "fault",
+        "value": 0.0
+      }
+    }
+  },
+  "sensors.temperature_nvme-pci-0200_temp1_Composite_input": {
+    "name": "sensors.temperature_nvme-pci-0200_temp1_Composite_input",
+    "family": "Temperature",
+    "context": "system.hw.sensor.temperature.input",
+    "units": "degrees Celsius",
+    "last_updated": 1792107505,
+    "dimensions": {
+      "input": {
+        "name": "input",
+        "value": 54.85
+      }
+    }
+  },
+  "sensors.temperature_nvme-pci-0200_temp1_Composite_alarm": {
+    "name": "sensors.temperature_nvme-pci-0200_temp1_Composite_alarm",
+    "family": "Temperature",
+    "context": "system.hw.sensor.temperature.alarm",
+    "units": "status",
+    "last_updated": 1792107505,
+    "dimensions": {
+      "clear": {
+        "name": "clear",
+        "value": 1.0
+      },
+      "warning": {
+        "name": "warning",
+        "value": 0.0
+      },
+      "alarm": {
+        "name": "alarm",
+        "value": 0.0
+      },
+      "critical": {
+        "name": "critical",
+        "value": 0.0
+      },
+      "fault": {
+        "name": "fault",
+        "value": 0.0
+      }
+    }
+  },
+  "sensors.temperature_nvme-pci-0200_temp2_Sensor_1_input": {
+    "name": "sensors.temperature_nvme-pci-0200_temp2_Sensor_1_input",
+    "family": "Temperature",
+    "context": "system.hw.sensor.temperature.input",
+    "units": "degrees Celsius",
+    "last_updated": 1792107505,
+    "dimensions": {
+      "input": {
+        "name": "input",
+        "value": 75.85
+      }
+    }
+  },
+  "sensors.temperature_nvme-pci-0200_temp2_Sensor_1_alarm": {
+    "name": "sensors.temperature_nvme-pci-0200_temp2_Sensor_1_alarm",
+    "family": "Temperature",
+    "context": "system.hw.sensor.temperature.alarm",
+    "units": "status",
+    "last_updated": 1792107505,
+    "dimensions": {
+      "clear": {
+        "name": "clear",
+        "value": 1.0
+      },
+      "warning": {
+        "name": "warning",
+        "value": 0.0
+      },
+      "fault": {
+        "name": "fault",
+        "value": 0.0
+      }
+    }
+  },
+  "sensors.temperature_histogram": {
+    "name": "sensors.temperature_histogram",
+    "family": "Temperature",
+    "context": "system.hw.sensor.temperature.histogram",
+    "units": "sensors",
+    "last_updated": 1792107505,
+    "dimensions": {
+      "40": {
+        "name": "40",
+        "value": 1.0
+      },
+      "50": {
+        "name": "50",
+        "value": 0.0
+      },
+      "60": {
+        "name": "60",
+        "value": 1.0
+      },
+      "70": {
+        "name": "70",
+        "value": 0.0
+      },
+      "80": {
+        "name": "80",
+        "value": 1.0
+      },
+      "85": {
+        "name": "85",
+        "value": 5.0
+      },
+      "90": {
+        "name": "90",
+        "value": 0.0
+      },
+      "95": {
+        "name": "95",
+        "value": 0.0
+      },
+      "100": {
+        "name": "100",
+        "value": 0.0
+      },
+      "+Inf": {
+        "name": "+Inf",
+        "value": 0.0
+      }
+    }
+  }
+}

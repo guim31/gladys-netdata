@@ -1,177 +1,909 @@
 {
   "manifest_version": 1,
   "type": "device",
-  "name": "Demo Devices Template",
+  "name": "Netdata",
   "description": {
-    "en": "Starter template showing sensors, a switch, a dimmable light and a smart plug.",
-    "fr": "Template de démarrage : capteurs, interrupteur, lampe variable et prise connectée."
+    "en": "Your Netdata nodes in Gladys: CPU, memory, disk, network, temperature and alarms.",
+    "fr": "Vos nœuds Netdata dans Gladys : processeur, mémoire, disque, réseau, température et alarmes.",
+    "de": "Deine Netdata-Knoten in Gladys: Prozessor, Speicher, Datenträger, Netzwerk, Temperatur, Alarme.",
+    "es": "Sus nodos Netdata en Gladys: procesador, memoria, disco, red, temperatura y alarmas."
   },
   "version": "1.0.0",
-  "docker_image": "ghcr.io/gladysassistant/integration-template-js:1.0.0",
+  "docker_image": "ghcr.io/guim31/gladys-netdata:1.0.0",
   "gladys_version": ">=5.1.0",
-  "cover_image": "https://raw.githubusercontent.com/GladysAssistant/integration-template-js/master/cover.png",
-  "categories": ["lighting", "security", "environment"],
-  "transports": ["local", "cloud"],
+  "cover_image": "https://raw.githubusercontent.com/guim31/gladys-netdata/main/cover.png",
+  "categories": ["network"],
+  "transports": ["local"],
   "config_schema": [
     {
       "key": "intro",
       "type": "section",
-      "label": { "en": "Getting started", "fr": "Pour commencer" },
+      "label": {
+        "en": "Your Netdata agents",
+        "fr": "Vos agents Netdata",
+        "de": "Deine Netdata-Agenten",
+        "es": "Sus agentes Netdata"
+      },
       "description": {
-        "en": "The demo weather station reads real data from the free Open-Meteo API: pick the coordinates to observe. No account, no API key.",
-        "fr": "La station météo de démonstration lit de vraies données via l'API gratuite Open-Meteo : choisissez les coordonnées à observer. Pas de compte, pas de clé d'API."
+        "en": "Enter the address of a Netdata agent, or better of a Netdata parent: every node that streams to it becomes a device. Then add the nodes you want from the Discover tab. Netdata Cloud is not needed.",
+        "fr": "Saisissez l'adresse d'un agent Netdata, ou mieux d'un parent Netdata : chaque nœud qui lui envoie ses données devient un appareil. Ajoutez ensuite les nœuds voulus depuis l'onglet Découverte. Netdata Cloud n'est pas nécessaire.",
+        "de": "Gib die Adresse eines Netdata-Agenten ein, oder besser eines Netdata-Parents: Jeder Knoten, der an ihn streamt, wird ein Gerät. Füge dann im Tab „Entdecken“ die gewünschten Knoten hinzu. Netdata Cloud wird nicht benötigt.",
+        "es": "Introduzca la dirección de un agente Netdata, o mejor de un padre Netdata: cada nodo que le envía sus datos se convierte en un dispositivo. Añada luego los nodos que quiera desde la pestaña Descubrir. Netdata Cloud no es necesario."
       },
       "links": [
         {
-          "url": "https://open-meteo.com/en/docs",
-          "label": { "en": "Open-Meteo documentation", "fr": "Documentation Open-Meteo" }
+          "url": "https://github.com/guim31/gladys-netdata/blob/main/docs/en.md",
+          "label": {
+            "en": "Setup guide",
+            "fr": "Guide d'installation",
+            "de": "Installationsanleitung",
+            "es": "Guía de instalación"
+          }
         }
       ]
     },
     {
-      "key": "latitude",
-      "type": "number",
-      "label": { "en": "Latitude", "fr": "Latitude" },
-      "description": {
-        "en": "Latitude used for the demo weather sensor.",
-        "fr": "Latitude utilisée par le capteur météo de démonstration."
+      "key": "agent_1_url",
+      "type": "string",
+      "label": {
+        "en": "Netdata address",
+        "fr": "Adresse de Netdata",
+        "de": "Netdata-Adresse",
+        "es": "Dirección de Netdata"
       },
-      "placeholder": { "en": "e.g. 48.8566", "fr": "ex. 48.8566" },
-      "required": true,
-      "default": 48.8566,
-      "min": -90,
-      "max": 90
-    },
-    {
-      "key": "longitude",
-      "type": "number",
-      "label": { "en": "Longitude", "fr": "Longitude" },
-      "description": {
-        "en": "Longitude used for the demo weather sensor.",
-        "fr": "Longitude utilisée par le capteur météo de démonstration."
-      },
-      "placeholder": { "en": "e.g. 2.3522", "fr": "ex. 2.3522" },
-      "required": true,
-      "default": 2.3522,
-      "min": -180,
-      "max": 180
-    },
-    {
-      "key": "unit",
-      "type": "select",
-      "label": { "en": "Temperature unit", "fr": "Unité de température" },
       "required": false,
-      "default": "celsius",
+      "placeholder": {
+        "en": "192.168.1.20",
+        "fr": "192.168.1.20",
+        "de": "192.168.1.20",
+        "es": "192.168.1.20"
+      },
+      "description": {
+        "en": "Address of a Netdata agent or parent (port 19999 by default): 192.168.1.20, nas.lan or http://nas.lan:19999.",
+        "fr": "Adresse d'un agent ou d'un parent Netdata (port 19999 par défaut) : 192.168.1.20, nas.lan ou http://nas.lan:19999.",
+        "de": "Adresse eines Netdata-Agenten oder -Parents (standardmäßig Port 19999): 192.168.1.20, nas.lan oder http://nas.lan:19999.",
+        "es": "Dirección de un agente o padre Netdata (puerto 19999 por defecto): 192.168.1.20, nas.lan o http://nas.lan:19999."
+      }
+    },
+    {
+      "key": "agent_1_token",
+      "type": "secret",
+      "label": {
+        "en": "Bearer token (optional)",
+        "fr": "Jeton Bearer (facultatif)",
+        "de": "Bearer-Token (optional)",
+        "es": "Token Bearer (opcional)"
+      },
+      "required": false,
+      "description": {
+        "en": "Only when the agent or its reverse proxy asks for an Authorization: Bearer header. Leave empty otherwise.",
+        "fr": "Seulement si l'agent ou son proxy inverse demande un en-tête Authorization: Bearer. Sinon, laissez vide.",
+        "de": "Nur wenn der Agent oder sein Reverse-Proxy einen Authorization-Bearer-Header verlangt. Sonst leer lassen.",
+        "es": "Solo si el agente o su proxy inverso pide una cabecera Authorization: Bearer. Si no, déjelo vacío."
+      }
+    },
+    {
+      "key": "second_agent",
+      "type": "section",
+      "label": {
+        "en": "Second Netdata agent (optional)",
+        "fr": "Deuxième agent Netdata (facultatif)",
+        "de": "Zweiter Netdata-Agent (optional)",
+        "es": "Segundo agente Netdata (opcional)"
+      },
+      "description": {
+        "en": "Another agent, with its own address. A Netdata parent already gives all its children.",
+        "fr": "Un autre agent, avec sa propre adresse. Un parent Netdata donne déjà tous ses enfants.",
+        "de": "Ein weiterer Agent mit eigener Adresse. Ein Netdata-Parent liefert bereits alle seine Kinder.",
+        "es": "Otro agente, con su propia dirección. Un padre Netdata ya da todos sus hijos."
+      }
+    },
+    {
+      "key": "agent_2_url",
+      "type": "string",
+      "label": {
+        "en": "Second Netdata address",
+        "fr": "Adresse du deuxième Netdata",
+        "de": "Adresse des zweiten Netdata",
+        "es": "Dirección del segundo Netdata"
+      },
+      "required": false,
+      "placeholder": {
+        "en": "192.168.1.20",
+        "fr": "192.168.1.20",
+        "de": "192.168.1.20",
+        "es": "192.168.1.20"
+      }
+    },
+    {
+      "key": "agent_2_token",
+      "type": "secret",
+      "label": {
+        "en": "Second bearer token (optional)",
+        "fr": "Deuxième jeton Bearer (facultatif)",
+        "de": "Zweites Bearer-Token (optional)",
+        "es": "Segundo token Bearer (opcional)"
+      },
+      "required": false
+    },
+    {
+      "key": "third_agent",
+      "type": "section",
+      "label": {
+        "en": "Third Netdata agent (optional)",
+        "fr": "Troisième agent Netdata (facultatif)",
+        "de": "Dritter Netdata-Agent (optional)",
+        "es": "Tercer agente Netdata (opcional)"
+      },
+      "description": {
+        "en": "Another agent, with its own address. A Netdata parent already gives all its children.",
+        "fr": "Un autre agent, avec sa propre adresse. Un parent Netdata donne déjà tous ses enfants.",
+        "de": "Ein weiterer Agent mit eigener Adresse. Ein Netdata-Parent liefert bereits alle seine Kinder.",
+        "es": "Otro agente, con su propia dirección. Un padre Netdata ya da todos sus hijos."
+      }
+    },
+    {
+      "key": "agent_3_url",
+      "type": "string",
+      "label": {
+        "en": "Third Netdata address",
+        "fr": "Adresse du troisième Netdata",
+        "de": "Adresse des dritten Netdata",
+        "es": "Dirección del tercer Netdata"
+      },
+      "required": false,
+      "placeholder": {
+        "en": "192.168.1.20",
+        "fr": "192.168.1.20",
+        "de": "192.168.1.20",
+        "es": "192.168.1.20"
+      }
+    },
+    {
+      "key": "agent_3_token",
+      "type": "secret",
+      "label": {
+        "en": "Third bearer token (optional)",
+        "fr": "Troisième jeton Bearer (facultatif)",
+        "de": "Drittes Bearer-Token (optional)",
+        "es": "Tercer token Bearer (opcional)"
+      },
+      "required": false
+    },
+    {
+      "key": "options",
+      "type": "section",
+      "label": {
+        "en": "Options",
+        "fr": "Options",
+        "de": "Optionen",
+        "es": "Opciones"
+      },
+      "description": {
+        "en": "Only the nodes added to Gladys receive values; the scene triggers work for every node.",
+        "fr": "Seuls les nœuds ajoutés à Gladys reçoivent des valeurs ; les déclencheurs de scène fonctionnent pour tous les nœuds.",
+        "de": "Nur die zu Gladys hinzugefügten Knoten erhalten Werte; die Szenen-Auslöser funktionieren für alle Knoten.",
+        "es": "Solo los nodos añadidos a Gladys reciben valores; los disparadores de escena funcionan para todos los nodos."
+      }
+    },
+    {
+      "key": "extra_charts",
+      "type": "string",
+      "label": {
+        "en": "Extra charts (optional)",
+        "fr": "Graphiques supplémentaires (facultatif)",
+        "de": "Zusätzliche Diagramme (optional)",
+        "es": "Gráficos adicionales (opcional)"
+      },
+      "required": false,
+      "placeholder": {
+        "en": "system.io, mem.swap",
+        "fr": "system.io, mem.swap",
+        "de": "system.io, mem.swap",
+        "es": "system.io, mem.swap"
+      },
+      "description": {
+        "en": "Netdata chart ids, separated by commas (5 at most): each dimension becomes a feature of every node that has the chart. The id is shown under the title of a chart in the Netdata dashboard.",
+        "fr": "Identifiants de graphiques Netdata, séparés par des virgules (5 au plus) : chaque dimension devient une fonctionnalité des nœuds qui ont ce graphique. L'identifiant figure sous le titre du graphique dans le tableau de bord Netdata.",
+        "de": "Diagramm-IDs von Netdata, durch Kommas getrennt (höchstens 5): Jede Dimension wird eine Funktion jedes Knotens mit diesem Diagramm. Die ID steht unter dem Titel des Diagramms im Netdata-Dashboard.",
+        "es": "Identificadores de gráficos Netdata, separados por comas (5 como máximo): cada dimensión se convierte en una función de los nodos que tienen ese gráfico. El identificador figura bajo el título del gráfico en el panel de Netdata."
+      }
+    },
+    {
+      "key": "poll_interval",
+      "type": "select",
+      "label": {
+        "en": "Refresh interval",
+        "fr": "Intervalle de rafraîchissement",
+        "de": "Aktualisierungsintervall",
+        "es": "Intervalo de actualización"
+      },
+      "description": {
+        "en": "How often every Netdata agent is read.",
+        "fr": "Fréquence de lecture de chaque agent Netdata.",
+        "de": "Wie oft jeder Netdata-Agent gelesen wird.",
+        "es": "Con qué frecuencia se lee cada agente Netdata."
+      },
+      "required": false,
+      "default": "30",
       "options": [
-        { "value": "celsius", "label": { "en": "Celsius", "fr": "Celsius" } },
-        { "value": "fahrenheit", "label": { "en": "Fahrenheit", "fr": "Fahrenheit" } }
+        {
+          "value": "30",
+          "label": {
+            "en": "30 seconds",
+            "fr": "30 secondes",
+            "de": "30 Sekunden",
+            "es": "30 segundos"
+          }
+        },
+        {
+          "value": "60",
+          "label": {
+            "en": "1 minute",
+            "fr": "1 minute",
+            "de": "1 Minute",
+            "es": "1 minuto"
+          }
+        },
+        {
+          "value": "120",
+          "label": {
+            "en": "2 minutes",
+            "fr": "2 minutes",
+            "de": "2 Minuten",
+            "es": "2 minutos"
+          }
+        },
+        {
+          "value": "300",
+          "label": {
+            "en": "5 minutes",
+            "fr": "5 minutes",
+            "de": "5 Minuten",
+            "es": "5 minutos"
+          }
+        }
       ]
     },
     {
-      "key": "poll_frequency",
-      "type": "number",
-      "label": { "en": "Refresh interval (s)", "fr": "Intervalle de rafraîchissement (s)" },
+      "key": "allow_self_signed",
+      "type": "boolean",
+      "label": {
+        "en": "Accept self-signed certificates",
+        "fr": "Accepter les certificats auto-signés",
+        "de": "Selbstsignierte Zertifikate akzeptieren",
+        "es": "Aceptar certificados autofirmados"
+      },
       "description": {
-        "en": "How often sensors are polled, in seconds (one minute minimum).",
-        "fr": "Fréquence d'interrogation des capteurs, en secondes (une minute minimum)."
+        "en": "Only for an https:// address (Netdata behind a reverse proxy) whose certificate your browser does not trust either.",
+        "fr": "Seulement pour une adresse en https:// (Netdata derrière un proxy inverse) dont votre navigateur ne reconnaît pas non plus le certificat.",
+        "de": "Nur für eine https://-Adresse (Netdata hinter einem Reverse-Proxy), deren Zertifikat auch dein Browser nicht anerkennt.",
+        "es": "Solo para una dirección https:// (Netdata detrás de un proxy inverso) cuyo certificado tampoco reconoce su navegador."
       },
       "required": false,
-      "default": 300,
-      "min": 60,
-      "max": 3600
+      "default": false
+    },
+    {
+      "key": "language",
+      "type": "select",
+      "label": {
+        "en": "Language of the names",
+        "fr": "Langue des noms",
+        "de": "Sprache der Namen",
+        "es": "Idioma de los nombres"
+      },
+      "description": {
+        "en": "Language of the feature names (set when a device is added), of the scene results and of the connection test.",
+        "fr": "Langue des noms des fonctionnalités (fixés à l'ajout d'un appareil), des résultats de scène et du test de connexion.",
+        "de": "Sprache der Funktionsnamen (beim Hinzufügen eines Geräts festgelegt), der Szenen-Ergebnisse und des Verbindungstests.",
+        "es": "Idioma de los nombres de las funciones (fijados al añadir un dispositivo), de los resultados de escena y de la prueba de conexión."
+      },
+      "required": false,
+      "default": "fr",
+      "options": [
+        {
+          "value": "en",
+          "label": {
+            "en": "English",
+            "fr": "English",
+            "de": "English",
+            "es": "English"
+          }
+        },
+        {
+          "value": "fr",
+          "label": {
+            "en": "Français",
+            "fr": "Français",
+            "de": "Français",
+            "es": "Français"
+          }
+        },
+        {
+          "value": "de",
+          "label": {
+            "en": "Deutsch",
+            "fr": "Deutsch",
+            "de": "Deutsch",
+            "es": "Deutsch"
+          }
+        },
+        {
+          "value": "es",
+          "label": {
+            "en": "Español",
+            "fr": "Español",
+            "de": "Español",
+            "es": "Español"
+          }
+        }
+      ]
     }
   ],
   "actions": [
     {
-      "key": "test_weather",
-      "label": { "en": "Test the weather provider", "fr": "Tester le fournisseur météo" },
-      "timeout_seconds": 30
-    },
+      "key": "test_connection",
+      "label": {
+        "en": "Test the connection",
+        "fr": "Tester la connexion",
+        "de": "Verbindung testen",
+        "es": "Probar la conexión"
+      },
+      "description": {
+        "en": "Reads every configured Netdata agent now and says what it found.",
+        "fr": "Lit maintenant chaque agent Netdata configuré et dit ce qu'il a trouvé.",
+        "de": "Liest jetzt jeden konfigurierten Netdata-Agenten und sagt, was gefunden wurde.",
+        "es": "Lee ahora cada agente Netdata configurado e indica lo que ha encontrado."
+      },
+      "timeout_seconds": 60
+    }
+  ],
+  "widgets": [
     {
-      "key": "identify",
-      "label": { "en": "Identify a device", "fr": "Identifier un appareil" },
-      "fields": [
+      "key": "nodes",
+      "label": {
+        "en": "Netdata nodes",
+        "fr": "Nœuds Netdata",
+        "de": "Netdata-Knoten",
+        "es": "Nodos Netdata"
+      },
+      "icon": "server",
+      "description": {
+        "en": "Your nodes and their Netdata alarms at a glance, or the gauges and alarms of one node.",
+        "fr": "Vos nœuds et leurs alarmes Netdata d'un coup d'œil, ou les jauges et alarmes d'un nœud.",
+        "de": "Deine Knoten und ihre Netdata-Alarme auf einen Blick oder Anzeigen und Alarme eines Knotens.",
+        "es": "Sus nodos y sus alarmas Netdata de un vistazo, o los indicadores y alarmas de un nodo."
+      },
+      "settings": [
         {
-          "key": "device",
+          "key": "node",
           "type": "select",
           "source": "devices",
-          "label": { "en": "Device", "fr": "Appareil" },
-          "required": true
+          "required": false,
+          "label": {
+            "en": "Node",
+            "fr": "Nœud",
+            "de": "Knoten",
+            "es": "Nodo"
+          },
+          "description": {
+            "en": "Empty: every node. Otherwise the gauges and alarms of the chosen node.",
+            "fr": "Vide : tous les nœuds. Sinon, les jauges et alarmes du nœud choisi.",
+            "de": "Leer: alle Knoten. Sonst die Anzeigen und Alarme des gewählten Knotens.",
+            "es": "Vacío: todos los nodos. Si no, los indicadores y alarmas del nodo elegido."
+          }
         }
-      ]
+      ],
+      "action_timeout_seconds": 30
     }
   ],
   "scene_triggers": [
     {
-      "key": "motion_detected",
-      "label": { "en": "Motion detected", "fr": "Mouvement détecté" },
+      "key": "alarm_status_changed",
+      "label": {
+        "en": "Netdata alarm",
+        "fr": "Alarme Netdata",
+        "de": "Netdata-Alarm",
+        "es": "Alarma Netdata"
+      },
       "description": {
-        "en": "A demo motion sensor saw a person or an animal move.",
-        "fr": "Un détecteur de démonstration a vu bouger une personne ou un animal."
+        "en": "A Netdata alarm is raised to warning or critical, or goes back to normal.",
+        "fr": "Une alarme Netdata passe en avertissement ou critique, ou revient à la normale.",
+        "de": "Ein Netdata-Alarm wechselt zu Warnung oder kritisch oder wird wieder normal.",
+        "es": "Una alarma Netdata pasa a advertencia o crítica, o vuelve a la normalidad."
       },
       "fields": [
         {
-          "key": "device",
+          "key": "node",
           "type": "select",
           "source": "devices",
-          "label": { "en": "Sensor", "fr": "Détecteur" }
+          "label": {
+            "en": "Node",
+            "fr": "Nœud",
+            "de": "Knoten",
+            "es": "Nodo"
+          },
+          "description": {
+            "en": "A Netdata node. Empty: every node, added to Gladys or not.",
+            "fr": "Un nœud Netdata. Vide : tous les nœuds, ajoutés à Gladys ou non.",
+            "de": "Ein Netdata-Knoten. Leer: alle Knoten, ob zu Gladys hinzugefügt oder nicht.",
+            "es": "Un nodo Netdata. Vacío: todos los nodos, añadidos a Gladys o no."
+          }
         },
         {
-          "key": "target",
-          "type": "multi_select",
-          "label": { "en": "What moved", "fr": "Ce qui a bougé" },
+          "key": "status",
+          "type": "select",
+          "label": {
+            "en": "New state",
+            "fr": "Nouvel état",
+            "de": "Neuer Zustand",
+            "es": "Nuevo estado"
+          },
+          "description": {
+            "en": "Empty: every change.",
+            "fr": "Vide : tout changement.",
+            "de": "Leer: jede Änderung.",
+            "es": "Vacío: cualquier cambio."
+          },
           "options": [
-            { "value": "person", "label": { "en": "Person", "fr": "Personne" } },
-            { "value": "animal", "label": { "en": "Animal", "fr": "Animal" } }
+            {
+              "value": "warning",
+              "label": {
+                "en": "Warning",
+                "fr": "Avertissement",
+                "de": "Warnung",
+                "es": "Advertencia"
+              }
+            },
+            {
+              "value": "critical",
+              "label": {
+                "en": "Critical",
+                "fr": "Critique",
+                "de": "Kritisch",
+                "es": "Crítica"
+              }
+            },
+            {
+              "value": "clear",
+              "label": {
+                "en": "Back to normal",
+                "fr": "Revenue à la normale",
+                "de": "Wieder normal",
+                "es": "Normal"
+              }
+            }
           ]
+        },
+        {
+          "key": "alarm",
+          "type": "string",
+          "label": {
+            "en": "Alarm name (optional)",
+            "fr": "Nom de l'alarme (facultatif)",
+            "de": "Name des Alarms (optional)",
+            "es": "Nombre de la alarma (opcional)"
+          },
+          "placeholder": {
+            "en": "ram_in_use",
+            "fr": "ram_in_use",
+            "de": "ram_in_use",
+            "es": "ram_in_use"
+          },
+          "description": {
+            "en": "The name Netdata gives the alarm, e.g. ram_in_use or disk_space_usage. Empty: every alarm.",
+            "fr": "Le nom que Netdata donne à l'alarme, par ex. ram_in_use ou disk_space_usage. Vide : toutes les alarmes.",
+            "de": "Der Name, den Netdata dem Alarm gibt, z. B. ram_in_use oder disk_space_usage. Leer: alle Alarme.",
+            "es": "El nombre que Netdata da a la alarma, p. ej. ram_in_use o disk_space_usage. Vacío: todas las alarmas."
+          }
         }
       ],
       "variables": [
         {
-          "key": "target",
+          "key": "node_name",
           "type": "string",
-          "label": { "en": "What moved", "fr": "Ce qui a bougé" }
+          "label": {
+            "en": "Node",
+            "fr": "Nœud",
+            "de": "Knoten",
+            "es": "Nodo"
+          }
+        },
+        {
+          "key": "alarm_name",
+          "type": "string",
+          "label": {
+            "en": "Alarm",
+            "fr": "Alarme",
+            "de": "Alarm",
+            "es": "Alarma"
+          }
+        },
+        {
+          "key": "chart",
+          "type": "string",
+          "label": {
+            "en": "Chart",
+            "fr": "Graphique",
+            "de": "Diagramm",
+            "es": "Gráfico"
+          }
+        },
+        {
+          "key": "status_label",
+          "type": "string",
+          "label": {
+            "en": "New state",
+            "fr": "Nouvel état",
+            "de": "Neuer Zustand",
+            "es": "Nuevo estado"
+          }
+        },
+        {
+          "key": "value",
+          "type": "number",
+          "label": {
+            "en": "Value",
+            "fr": "Valeur",
+            "de": "Wert",
+            "es": "Valor"
+          }
+        },
+        {
+          "key": "value_text",
+          "type": "string",
+          "label": {
+            "en": "Value with its unit",
+            "fr": "Valeur avec son unité",
+            "de": "Wert mit Einheit",
+            "es": "Valor con su unidad"
+          }
+        },
+        {
+          "key": "info",
+          "type": "string",
+          "label": {
+            "en": "Description",
+            "fr": "Description",
+            "de": "Beschreibung",
+            "es": "Descripción"
+          }
+        }
+      ]
+    },
+    {
+      "key": "node_unreachable",
+      "label": {
+        "en": "Node unreachable",
+        "fr": "Nœud injoignable",
+        "de": "Knoten nicht erreichbar",
+        "es": "Nodo inaccesible"
+      },
+      "description": {
+        "en": "A Netdata node no longer answers, or no longer streams to its parent (two reads in a row).",
+        "fr": "Un nœud Netdata ne répond plus, ou n'envoie plus ses données à son parent (deux lectures de suite).",
+        "de": "Ein Netdata-Knoten antwortet nicht mehr oder streamt nicht mehr an seinen Parent (zwei Lesungen hintereinander).",
+        "es": "Un nodo Netdata ya no responde, o ya no envía sus datos a su padre (dos lecturas seguidas)."
+      },
+      "fields": [
+        {
+          "key": "node",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Node",
+            "fr": "Nœud",
+            "de": "Knoten",
+            "es": "Nodo"
+          },
+          "description": {
+            "en": "A Netdata node. Empty: every node, added to Gladys or not.",
+            "fr": "Un nœud Netdata. Vide : tous les nœuds, ajoutés à Gladys ou non.",
+            "de": "Ein Netdata-Knoten. Leer: alle Knoten, ob zu Gladys hinzugefügt oder nicht.",
+            "es": "Un nodo Netdata. Vacío: todos los nodos, añadidos a Gladys o no."
+          }
+        }
+      ],
+      "variables": [
+        {
+          "key": "node_name",
+          "type": "string",
+          "label": {
+            "en": "Node",
+            "fr": "Nœud",
+            "de": "Knoten",
+            "es": "Nodo"
+          }
+        },
+        {
+          "key": "error",
+          "type": "string",
+          "label": {
+            "en": "Reason",
+            "fr": "Raison",
+            "de": "Grund",
+            "es": "Motivo"
+          }
         }
       ]
     }
   ],
   "scene_actions": [
     {
-      "key": "identify_device",
-      "label": { "en": "Identify a device", "fr": "Identifier un appareil" },
-      "description": {
-        "en": "Make a device signal itself (the demo light blinks).",
-        "fr": "Fait se signaler un appareil (la lampe de démonstration clignote)."
+      "key": "get_node_status",
+      "label": {
+        "en": "State of a Netdata node",
+        "fr": "État d'un nœud Netdata",
+        "de": "Zustand eines Netdata-Knotens",
+        "es": "Estado de un nodo Netdata"
       },
-      "timeout_seconds": 15,
+      "description": {
+        "en": "Reads a node for the next actions: CPU, memory, disk, temperature, alarms, and a ready-made summary.",
+        "fr": "Lit un nœud pour les actions suivantes : processeur, mémoire, disque, température, alarmes, et un résumé prêt à envoyer.",
+        "de": "Liest einen Knoten für die nächsten Aktionen: Prozessor, Speicher, Datenträger, Temperatur, Alarme und eine fertige Zusammenfassung.",
+        "es": "Lee un nodo para las acciones siguientes: procesador, memoria, disco, temperatura, alarmas y un resumen listo para enviar."
+      },
+      "timeout_seconds": 30,
       "fields": [
         {
-          "key": "device",
+          "key": "node",
           "type": "select",
           "source": "devices",
-          "label": { "en": "Device", "fr": "Appareil" },
-          "required": true
+          "required": true,
+          "label": {
+            "en": "Node",
+            "fr": "Nœud",
+            "de": "Knoten",
+            "es": "Nodo"
+          },
+          "description": {
+            "en": "A Netdata node.",
+            "fr": "Un nœud Netdata.",
+            "de": "Ein Netdata-Knoten.",
+            "es": "Un nodo Netdata."
+          }
         }
       ],
       "outputs": [
         {
-          "key": "signalled",
+          "key": "name",
+          "type": "string",
+          "label": {
+            "en": "Node name",
+            "fr": "Nom du nœud",
+            "de": "Knotenname",
+            "es": "Nombre del nodo"
+          }
+        },
+        {
+          "key": "online",
           "type": "boolean",
-          "label": { "en": "Device signalled", "fr": "Appareil signalé" }
+          "label": {
+            "en": "Answers",
+            "fr": "Répond",
+            "de": "Antwortet",
+            "es": "Responde"
+          }
+        },
+        {
+          "key": "summary",
+          "type": "string",
+          "label": {
+            "en": "Summary",
+            "fr": "Résumé",
+            "de": "Zusammenfassung",
+            "es": "Resumen"
+          }
+        },
+        {
+          "key": "cpu",
+          "type": "number",
+          "label": {
+            "en": "CPU (%)",
+            "fr": "Processeur (%)",
+            "de": "Prozessor (%)",
+            "es": "Procesador (%)"
+          }
+        },
+        {
+          "key": "memory",
+          "type": "number",
+          "label": {
+            "en": "Memory (%)",
+            "fr": "Mémoire (%)",
+            "de": "Arbeitsspeicher (%)",
+            "es": "Memoria (%)"
+          }
+        },
+        {
+          "key": "load_1",
+          "type": "number",
+          "label": {
+            "en": "Load (1 min)",
+            "fr": "Charge (1 min)",
+            "de": "Last (1 Min.)",
+            "es": "Carga (1 min)"
+          }
+        },
+        {
+          "key": "load_5",
+          "type": "number",
+          "label": {
+            "en": "Load (5 min)",
+            "fr": "Charge (5 min)",
+            "de": "Last (5 Min.)",
+            "es": "Carga (5 min)"
+          }
+        },
+        {
+          "key": "load_15",
+          "type": "number",
+          "label": {
+            "en": "Load (15 min)",
+            "fr": "Charge (15 min)",
+            "de": "Last (15 Min.)",
+            "es": "Carga (15 min)"
+          }
+        },
+        {
+          "key": "disk_percent",
+          "type": "number",
+          "label": {
+            "en": "Main disk used (%)",
+            "fr": "Disque principal utilisé (%)",
+            "de": "Hauptdatenträger belegt (%)",
+            "es": "Disco principal usado (%)"
+          }
+        },
+        {
+          "key": "disk_free_gb",
+          "type": "number",
+          "label": {
+            "en": "Main disk free (GB)",
+            "fr": "Disque principal libre (Go)",
+            "de": "Hauptdatenträger frei (GB)",
+            "es": "Disco principal libre (GB)"
+          }
+        },
+        {
+          "key": "rx_mbps",
+          "type": "number",
+          "label": {
+            "en": "Download (Mbit/s)",
+            "fr": "Réception (Mbit/s)",
+            "de": "Empfang (Mbit/s)",
+            "es": "Recepción (Mbit/s)"
+          }
+        },
+        {
+          "key": "tx_mbps",
+          "type": "number",
+          "label": {
+            "en": "Upload (Mbit/s)",
+            "fr": "Émission (Mbit/s)",
+            "de": "Senden (Mbit/s)",
+            "es": "Envío (Mbit/s)"
+          }
+        },
+        {
+          "key": "temperature",
+          "type": "number",
+          "label": {
+            "en": "Highest temperature (°C)",
+            "fr": "Température la plus haute (°C)",
+            "de": "Höchste Temperatur (°C)",
+            "es": "Temperatura más alta (°C)"
+          }
+        },
+        {
+          "key": "uptime_days",
+          "type": "number",
+          "label": {
+            "en": "Uptime (days)",
+            "fr": "Durée de fonctionnement (jours)",
+            "de": "Laufzeit (Tage)",
+            "es": "Tiempo en marcha (días)"
+          }
+        },
+        {
+          "key": "alarms_warning",
+          "type": "number",
+          "label": {
+            "en": "Warning alarms",
+            "fr": "Alarmes en avertissement",
+            "de": "Warnende Alarme",
+            "es": "Alarmas de advertencia"
+          }
+        },
+        {
+          "key": "alarms_critical",
+          "type": "number",
+          "label": {
+            "en": "Critical alarms",
+            "fr": "Alarmes critiques",
+            "de": "Kritische Alarme",
+            "es": "Alarmas críticas"
+          }
         }
       ]
-    }
-  ],
-  "widgets": [
+    },
     {
-      "key": "demo_status",
-      "label": { "en": "Demo status", "fr": "État de la démo" },
-      "description": {
-        "en": "Live temperature and plug power, plug connection and observed location.",
-        "fr": "Température et puissance en direct, connexion de la prise, position observée."
+      "key": "get_active_alarms",
+      "label": {
+        "en": "Raised Netdata alarms",
+        "fr": "Alarmes Netdata levées",
+        "de": "Aktive Netdata-Alarme",
+        "es": "Alarmas Netdata activas"
       },
-      "icon": "activity",
-      "action_timeout_seconds": 15
+      "description": {
+        "en": "Lists the alarms raised now, on one node or on all of them, with their count and a ready-made summary.",
+        "fr": "Liste les alarmes levées en ce moment, sur un nœud ou sur tous, avec leur nombre et un résumé prêt à envoyer.",
+        "de": "Listet die gerade aktiven Alarme auf einem oder allen Knoten auf, mit ihrer Anzahl und einer fertigen Zusammenfassung.",
+        "es": "Enumera las alarmas activas ahora, en un nodo o en todos, con su número y un resumen listo para enviar."
+      },
+      "timeout_seconds": 30,
+      "fields": [
+        {
+          "key": "node",
+          "type": "select",
+          "source": "devices",
+          "required": false,
+          "label": {
+            "en": "Node",
+            "fr": "Nœud",
+            "de": "Knoten",
+            "es": "Nodo"
+          },
+          "description": {
+            "en": "Empty: every node.",
+            "fr": "Vide : tous les nœuds.",
+            "de": "Leer: alle Knoten.",
+            "es": "Vacío: todos los nodos."
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "key": "count",
+          "type": "number",
+          "label": {
+            "en": "Raised alarms",
+            "fr": "Alarmes levées",
+            "de": "Aktive Alarme",
+            "es": "Alarmas activas"
+          }
+        },
+        {
+          "key": "warning",
+          "type": "number",
+          "label": {
+            "en": "Warning alarms",
+            "fr": "Alarmes en avertissement",
+            "de": "Warnende Alarme",
+            "es": "Alarmas de advertencia"
+          }
+        },
+        {
+          "key": "critical",
+          "type": "number",
+          "label": {
+            "en": "Critical alarms",
+            "fr": "Alarmes critiques",
+            "de": "Kritische Alarme",
+            "es": "Alarmas críticas"
+          }
+        },
+        {
+          "key": "summary",
+          "type": "string",
+          "label": {
+            "en": "Summary",
+            "fr": "Résumé",
+            "de": "Zusammenfassung",
+            "es": "Resumen"
+          }
+        }
+      ]
     }
   ]
 }

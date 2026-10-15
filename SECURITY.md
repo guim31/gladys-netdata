@@ -30,6 +30,14 @@ Gladys before reporting a problem.
 
 In scope: the code of this repository and the Docker image it publishes.
 
+The integration reads the REST API of the Netdata agents configured in Gladys,
+on the local network, and never writes to them. The optional bearer tokens
+are kept by Gladys in the integration configuration, sent only to their agent
+in an `Authorization` header, and never logged. Under `/data`, the integration
+keeps one file: the alarms raised on each node at the last read, so that a
+restart neither misses nor repeats an alarm transition. No credential is
+stored there.
+
 Out of scope: Gladys Assistant itself (see its
 [security policy](https://github.com/GladysAssistant/Gladys/security/policy)),
-and the third-party services and devices the integration talks to.
+Netdata and Netdata Cloud, and the machines they monitor.

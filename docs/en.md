@@ -1,61 +1,174 @@
-# Demo Devices Template
+# Netdata
 
-This is the user documentation of the integration. Gladys re-hosts this file
-and shows a permanent **Documentation** link to it in the Configuration screen
-(in the user's language, with English as the fallback) — it is when
-configuring that the user needs it most. Keep the short onboarding hints in
-the `section` blocks of the manifest `config_schema`; put the long
-step-by-step (screenshots, troubleshooting…) here.
+[Netdata](https://www.netdata.cloud/) is a real-time monitoring agent for
+Linux, FreeBSD, macOS and Windows machines, very common in home labs. This
+integration reads the Netdata agents of your **other machines** — a NAS, a home
+server, a Raspberry Pi — and brings them into Gladys: one device per Netdata
+node, with its CPU, memory, load, main disk, network, temperature, uptime and
+the number of Netdata alarms raised. Point it at a **Netdata parent** and every
+node streaming to it shows up. Scenes can react when a Netdata alarm is raised
+or clears, or when a node no longer answers, and a dashboard widget shows your
+nodes and their alarms. Everything stays on your local network: Netdata Cloud
+is not needed.
 
-## What you get
+Tested against a real Netdata v2.12.1 parent and child (Docker), with test
+alarms raised and cleared. Not yet on every installation: feedback welcome on
+[the issues](https://github.com/guim31/gladys-netdata/issues).
 
-Six demo devices show up after installation: a weather station (real data
-from Open-Meteo), a switch, a dimmable light, a smart plug with power
-metering, a motion sensor and a camera.
+## What you need
 
-## Configuration
+- Gladys Assistant 5.1.0 or later.
+- A Netdata agent (v1.31 or later, v2 recommended) on each machine to follow,
+  or a Netdata parent they stream to, reachable from the Gladys machine (port
+  19999 by default).
+- Up to three agents per installation of the integration, and 30 nodes per
+  agent.
 
-1. Open the **Configuration** tab of the integration.
-2. Set the **latitude** and **longitude** the demo weather station should
-   observe (they default to Paris), and pick your temperature unit.
-   The **refresh interval** sets how often the weather station and the
-   plug's power are read: every 5 minutes by default, every minute at most.
-3. Save: the devices appear in the **Discovery** tab, ready to be added.
+The integration only reads: it never changes anything on your machines nor in
+the Netdata configuration.
 
-The **Prefer the local connection** toggle drives the demo plug: it reports
-the channel it actually uses as a badge (local or cloud), with an orange dot
-when it runs degraded (local refused, cloud fallback).
+## Getting started
 
-## Actions
+### 1. Check that Netdata answers
 
-- **Test the weather provider** — performs a live request to Open-Meteo and
-  shows the current temperature and humidity under the button.
-- **Identify a device** — pick one of your devices in the list and it will
-  signal itself (the demo light "blinks" in the logs).
+From a browser on your network, open `http://<machine>:19999`: the Netdata
+dashboard must show. If it does not, Netdata may listen on `localhost` only:
+set `bind to = *` in the `[web]` section of `netdata.conf` and restart it.
 
-## Scenes
+With several machines, the simplest is a
+[Netdata parent](https://learn.netdata.cloud/docs/observability-centralization-points/metrics-centralization-points/configuration):
+the other agents stream to it, and the integration reads them all through it,
+with a single address.
 
-The integration adds its own cards to the scene editor (Gladys 5.1 or
-later), under the **Integrations** category:
+### 2. Configure the integration
 
-- **Motion detected** (trigger) — starts the scene when a demo motion sensor
-  sees something move. Optionally pick the sensor and what moved (person,
-  animal); left empty, any detection matches. The following actions can
-  read what moved with `{{triggerEvent.data.target}}`.
-- **Identify a device** (action) — makes the chosen device signal itself.
-  It returns whether the device could signal itself, so the following
-  actions can depend on it.
+In Gladys, open **Integrations → Netdata → Configuration**:
+
+- **Netdata address**: the address of the agent or the parent, for example
+  `192.168.1.20`, `nas.lan` or `http://nas.lan:19999` (the address copied from
+  the browser works too).
+- **Bearer token (optional)**: only when the agent or its reverse proxy asks
+  for an `Authorization: Bearer` header. Leave it empty on a plain local agent.
+- **Second** and **third Netdata address**: other agents, not needed for the
+  children of a parent.
+- **Extra charts (optional)**: Netdata chart ids, separated by commas, for
+  example `system.io, mem.swap`. Each dimension of these charts becomes an
+  extra feature of the nodes that have them. The id shows under the title of
+  each chart in the Netdata dashboard. Five charts at most.
+- **Refresh interval**: 30 seconds by default.
+- **Accept self-signed certificates**: only for an `https://` address whose
+  certificate your browser does not trust either.
+- **Language of the names**: the language of the feature names, set when a
+  device is added, and of the scene results.
+
+Save, then use **Test the connection**: one line per agent, with the Netdata
+version, the number of nodes and of raised alarms.
+
+### 3. Add the nodes
+
+Open the **Discover** tab: each Netdata node is listed. Add the ones you want
+to follow. The scene triggers work for every node, added or not.
+
+## The devices
+
+Each node is one device, named after its host name. Its features:
+
+- **Online**: 1 while the node answers, 0 once it no longer does.
+- **CPU**: the processor use, in %.
+- **Memory**: the memory used by programs, in % (cache and buffers excluded,
+  as `free` counts it).
+- **Load (1 min)**, **Load (5 min)**, **Load (15 min)**: the load averages.
+- **Main disk used** (%) and **Main disk free** (GB): the root file system,
+  else the largest one.
+- **Download** and **Upload**: the traffic of the physical interfaces, in
+  Mbit/s.
+- **Highest temperature**: the hottest temperature sensor, in °C, when the
+  node has sensors.
+- **Uptime**: in days.
+- **Warning alarms** and **Critical alarms**: how many Netdata alarms are
+  raised now.
+- One feature per dimension of the **extra charts**, named after the chart and
+  the dimension, with the unit Netdata gives.
+
+The values that move at every read (CPU, memory, load, network, temperature)
+are sent to Gladys at most once a minute, the others when they change.
 
 ## Dashboard
 
-Add the **Demo status** widget to a dashboard: it shows the live
-temperature of the weather station and the power of the office plug, the
-connection the plug currently uses (orange when degraded) and the observed
-location. Its **Identify the light** button makes the demo light signal
-itself.
+Add the **Netdata nodes** widget to a dashboard:
+
+- with no node chosen in its settings, it shows how many nodes are online and
+  how many alarms are raised, then one line per node, red when it has a
+  critical alarm or does not answer, orange with a warning;
+- with a node chosen, it shows its CPU, memory and disk gauges, its
+  temperature, the list of its raised alarms with their values, its load and
+  its uptime.
+
+The **Refresh** button reads Netdata again at once.
+
+## Scenes
+
+### Triggers
+
+- **Netdata alarm**: a Netdata alarm is raised to warning or critical, or goes
+  back to normal. Filters: the node, the new state (**Warning**, **Critical**,
+  **Back to normal**) and the alarm name (for example `ram_in_use` or
+  `disk_space_usage`, shown in the Netdata dashboard); left empty, they match
+  everything. The actions can use the node, the alarm, its chart, the new
+  state, the value (with and without its unit) and the description of the
+  alarm. A value is not always known when an alarm goes back to normal (when
+  Netdata restarted or reloaded its alarms, for example).
+- **Node unreachable**: a node no longer answers, or no longer streams to its
+  parent, two reads in a row. The actions can use the node name and the reason.
+
+The alarms are those of Netdata itself: their thresholds are set in Netdata
+(`edit-config health.d/…`), not in Gladys. The alarms raised when the
+integration starts are its starting point: only the changes after that fire a
+scene, also across a restart of Gladys.
+
+### Actions
+
+- **State of a Netdata node**: reads a node and gives the next actions its
+  figures (CPU, memory, load, disk, network, temperature, uptime, alarms) and a
+  ready-made summary, for example
+  `nas: CPU 12%, memory 45%, disk 78% (310 GB free), 48 °C, no alarm raised`.
+- **Raised Netdata alarms**: lists the alarms raised now, on one node or on all
+  of them, with their count and a summary to send, for example
+  `nas: ram_in_use (Warning, 91.2%)`.
+
+### Scene ideas
+
+- **Netdata alarm**, state **Critical** → send the message
+  `{{triggerEvent.data.node_name}}: {{triggerEvent.data.alarm_name}} ({{triggerEvent.data.value_text}})`.
+- Every morning at 8:00 → **Raised Netdata alarms** → if the count is above 0,
+  send the summary.
+- **Node unreachable** on the NAS → switch on a red light and send a message.
 
 ## Troubleshooting
 
-The integration logs everything it does: check the integration logs from the
-Gladys UI (or `docker logs` on the host) with `LOG_LEVEL=debug` for the full
-detail.
+- **"does not answer"**: check the address and the port in a browser, and
+  that Netdata listens on the network (`bind to = *`). A firewall may block
+  port 19999.
+- **"the agent asks for a token"** / **"token refused"**: the agent or the
+  reverse proxy in front of it protects the API: enter the right bearer token.
+- **"no Netdata agent at this address"**: another service answers there (a
+  login page, a reverse proxy without Netdata behind it).
+- **A node "no longer streams to its Netdata parent"**: the child is off, or
+  its streaming to the parent stopped: see the logs of its Netdata agent.
+- **No temperature**: the node has no sensor Netdata reads (a VM, a container
+  without access to `/sys`).
+- **Netdata in Docker shows its container only**: start it with the mounts of
+  the official instructions (`/proc`, `/sys`, `/etc/os-release`…), otherwise
+  it monitors its own container.
+- More details with the `LOG_LEVEL=debug` environment variable on the
+  integration.
+
+## Limits
+
+- Netdata Cloud and its rooms are not read: only local agents and parents.
+- 30 nodes per agent at most, three agents at most.
+- The integration reads the latest value of each chart at every refresh: it
+  does not import the history of Netdata.
+- Only the Netdata alarms change scenes: a threshold of your own is a scene
+  condition on a feature.
+- Not affiliated with Netdata Inc.
