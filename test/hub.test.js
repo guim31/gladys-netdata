@@ -336,3 +336,70 @@ test('the scene actions: state of a node, raised alarms, an unknown node', async
   const none = await world.fake.sceneAction('get_active_alarms', {});
   assert.equal(none.data.outputs.summary, 'Aucune alarme levée');
 });
+
+test('another agent in the same slot: the old nodes vanish, no false unreachable', async (t) => {
+  const other = new FakeNetdata({ withChild: false });
+  other.info.mirrored_hosts_status = [
+    { hostname: 'server-b', hops: 0, guid: '0c3a6f1e-5b2d-4c8a-9e7f-1a2b3c4d5e09' },
+  ];
+  other.metrics['0c3a6f1e-5b2d-4c8a-9e7f-1a2b3c4d5e09'] = other.metrics[PARENT_GUID];
+  const world = await started(t, { agents: { [URL_1]: new FakeNetdata(), [URL_2]: other } });
+  await world.fake.configUpdated({ agent_1_url: URL_2, language: 'en' });
+  await world.hub.pollAll();
+  await world.hub.pollAll();
+  assert.deepEqual(events(world, TRIGGERS.UNREACHABLE), []);
+  assert.deepEqual(
+    world.hub.nodeList().map((node) => node.hostname),
+    ['server-b'],
+  );
+});
+
+test('a child that moved to another parent is read through it', async (t) => {
+  const second = new FakeNetdata();
+  const world = await started(t, {
+    agents: { [URL_1]: new FakeNetdata(), [URL_2]: second },
+    config: { agent_1_url: URL_1, agent_2_url: URL_2, language: 'en' },
+  });
+  assert.equal(world.hub.nodes.get(CHILD_GUID).slot, 1);
+  world.netdata.setReachable(CHILD_GUID, false);
+  await world.hub.pollAll();
+  await world.hub.pollAll();
+  assert.equal(world.hub.nodes.get(CHILD_GUID).slot, 2);
+  assert.equal(world.hub.isOnline(world.hub.nodes.get(CHILD_GUID)), true);
+});
+
+test('the widget tells why no node is known when the agent refuses', async (t) => {
+  const world = await started(t, { agents: { [URL_1]: new FakeNetdata({ token: TOKEN }) } });
+  const ack = await world.fake.widgetGet('nodes', { settings: {}, language: 'en' });
+  assert.match(ack.data.content.components[1].text, /asks for a token/);
+});
+
+test('an alarm cleared while the integration was stopped keeps its value', async (t) => {
+  const clock = createClock();
+  const first = await createWorld({ clock });
+  await first.app.stop();
+  const netdata = first.netdata;
+  const latest = netdata.alarmAnswers[PARENT_GUID].latest_alarm_log_unique_id;
+  netdata.alarmLog[PARENT_GUID] = [
+    {
+      unique_id: latest + 5,
+      name: 'used_swap',
+      chart: 'mem.swap',
+      status: 'CLEAR',
+      old_status: 'WARNING',
+      value: 40,
+      value_string: '40%',
+    },
+  ];
+  netdata.setAlarms(
+    PARENT_GUID,
+    Object.values(netdata.alarmAnswers[PARENT_GUID].alarms).filter((a) => a.name !== 'used_swap'),
+    latest + 5,
+  );
+  const second = await createWorld({ clock, agents: { [URL_1]: netdata }, dataDir: first.dataDir });
+  t.after(() => second.app.stop());
+  assert.deepEqual(
+    events(second, TRIGGERS.ALARM).map((event) => [event.data.alarm, event.data.value]),
+    [['used_swap', 40]],
+  );
+});

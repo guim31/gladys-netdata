@@ -19,6 +19,7 @@
 // -----------------------------------------------------------------------------
 
 import { WIDGET_COLORS } from '@gladysassistant/integration-sdk';
+import { hostOf } from './config.js';
 import { WIDGET_KEY } from './hub.js';
 import {
   ALARM_STATUS_TEXT,
@@ -291,6 +292,31 @@ async function get(hub, { settings, language = 'en' }) {
   const chosen = typeof settings?.node === 'string' ? settings.node : '';
   if (!chosen) {
     if (hub.nodes.size === 0) {
+      const failing = [...hub.records.values()].filter((record) => record.error);
+      if (failing.length > 0) {
+        // No node known yet because the agents refuse: say why.
+        return {
+          ttl_seconds: 30,
+          components: [
+            { type: 'text', variant: 'heading', text: t(TEXT.title, language) },
+            {
+              type: 'text',
+              variant: 'body',
+              text: failing
+                .map((record) =>
+                  labelled(
+                    hostOf(record.agent.url),
+                    t(ERROR_TEXT[record.error.kind], language),
+                    language,
+                  ),
+                )
+                .join(' · ')
+                .slice(0, 200),
+            },
+            refreshButton(language),
+          ],
+        };
+      }
       return message(hub.records.size ? TEXT.waiting : TEXT.noNode, language, 30);
     }
     return overview(hub, language);

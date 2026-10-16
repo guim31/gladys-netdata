@@ -148,6 +148,12 @@ export class NetdataHub {
         record.dropped = true;
         clearTimeout(record.retryTimer);
         this.records.delete(slot);
+        // Another address may be another agent: its nodes are read again from scratch.
+        for (const [guid, node] of this.nodes) {
+          if (node.slot === slot) {
+            this.nodes.delete(guid);
+          }
+        }
       }
     }
     for (const agent of config.agents) {
@@ -379,11 +385,17 @@ export class NetdataHub {
 
     const listed = parseNodes(info);
     // Another agent with a lower slot already holds the node: one device, read once.
+    // A node its owner no longer reaches (moved to another parent) is taken over.
     const mine = listed.filter((entry) => {
-      const owner = this.nodes.get(entry.guid)?.slot;
-      return owner === undefined || owner === record.agent.slot || !this.records.has(owner)
-        ? true
-        : owner > record.agent.slot;
+      const owned = this.nodes.get(entry.guid);
+      const owner = owned?.slot;
+      return (
+        owner === undefined ||
+        owner === record.agent.slot ||
+        !this.records.has(owner) ||
+        owner > record.agent.slot ||
+        (NODE_KINDS.has(owned.error) && entry.reachable)
+      );
     });
     if (mine.length > MAX_NODES_PER_AGENT) {
       this.issues.fail(
@@ -414,6 +426,10 @@ export class NetdataHub {
   nodeState(record, entry, order) {
     let node = this.nodes.get(entry.guid);
     if (!node || node.slot !== record.agent.slot) {
+      if (node) {
+        // Another owner, maybe another health configuration: start again silently.
+        delete this.saved[entry.guid];
+      }
       node = {
         guid: entry.guid,
         slot: record.agent.slot,
@@ -425,6 +441,7 @@ export class NetdataHub {
         latestId: null,
         error: null,
         failures: 0,
+        failingSince: null,
         down: false,
         readAt: 0,
       };
@@ -438,6 +455,8 @@ export class NetdataHub {
 
   async readNode(record, entry, order) {
     const node = this.nodeState(record, entry, order);
+    // A read that ended after a reconfiguration or a change of owner is stale.
+    const stale = () => record.dropped || this.nodes.get(node.guid) !== node;
     if (!entry.reachable) {
       return this.nodeFailed(node, NODE_ERRORS.DISCONNECTED);
     }
@@ -452,9 +471,9 @@ export class NetdataHub {
       if (!err.kind) {
         throw err;
       }
-      return this.nodeFailed(node, err.kind);
+      return stale() ? false : this.nodeFailed(node, err.kind);
     }
-    if (record.dropped) {
+    if (stale()) {
       return false;
     }
     if (!metrics || !alarms) {
@@ -465,12 +484,13 @@ export class NetdataHub {
       logger.info(`${node.hostname} answers again`);
     }
     const parsed = parseAlarms(alarms);
-    const previousLatestId = node.latestId;
+    const previousLatestId = node.latestId ?? this.saved[node.guid]?.latestId ?? null;
     node.snapshot = parseSnapshot(metrics, this.config.extraCharts, MAX_EXTRA_DIMENSIONS);
     node.alarms = parsed.alarms;
     node.latestId = parsed.latestId;
     node.error = null;
     node.failures = 0;
+    node.failingSince = null;
     node.down = false;
     node.readAt = this.now();
     if (await this.compareAlarms(record, node, previousLatestId)) {
@@ -500,7 +520,7 @@ export class NetdataHub {
       ]),
     );
     if (!before) {
-      this.saved[node.guid] = { alarms: now, seenAt: this.now() };
+      this.saved[node.guid] = { alarms: now, latestId: node.latestId, seenAt: this.now() };
       return node.alarms.length > 0;
     }
     let changed = false;
@@ -542,7 +562,7 @@ export class NetdataHub {
         'clear',
       );
     }
-    this.saved[node.guid] = { alarms: now, seenAt: this.now() };
+    this.saved[node.guid] = { alarms: now, latestId: node.latestId, seenAt: this.now() };
     return changed;
   }
 
@@ -589,6 +609,7 @@ export class NetdataHub {
   async nodeFailed(node, kind) {
     const wasError = node.error;
     node.error = kind;
+    node.failingSince ??= this.now();
     node.readAt = this.now();
     // The outage of an agent is logged by the agent; a child logs its own.
     if (wasError !== kind && NODE_KINDS.has(kind)) {
@@ -633,6 +654,15 @@ export class NetdataHub {
   /** Forget the alarms of nodes not seen for a week (a machine retired). */
   forgetStale() {
     let forgotten = false;
+    // A node gone from its agent for a week: out of the widget and Discovery.
+    for (const [guid, node] of this.nodes) {
+      if (
+        node.error === NODE_ERRORS.GONE &&
+        this.now() - (node.failingSince ?? this.now()) > this.timings.forgetAfterMs
+      ) {
+        this.nodes.delete(guid);
+      }
+    }
     for (const [guid, entry] of Object.entries(this.saved)) {
       if (!this.nodes.has(guid) && this.now() - (entry?.seenAt ?? 0) > this.timings.forgetAfterMs) {
         delete this.saved[guid];

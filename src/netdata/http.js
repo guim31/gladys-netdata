@@ -43,9 +43,12 @@ export function httpRequest(url, { headers = {}, insecure = false, timeoutMs = 1
         response.on('data', (chunk) => {
           size += chunk.length;
           if (size > MAX_BODY_BYTES) {
+            // Rejected here: destroying a started response surfaces as a
+            // reset, which would read as "unreachable".
             const error = new Error('Response too large');
             error.code = 'ERESPONSETOOLARGE';
-            request.destroy(error);
+            reject(error);
+            request.destroy();
             return;
           }
           chunks.push(chunk);
