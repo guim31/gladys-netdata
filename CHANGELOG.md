@@ -10,6 +10,8 @@ the notes of the version's GitHub Release.
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-10-16
+
 ### Added
 
 - One Gladys device per Netdata node: a standalone agent, or a Netdata parent
@@ -27,4 +29,5 @@ the notes of the version's GitHub Release.
 - Optional bearer token, self-signed certificates, refresh interval from 30
   seconds to 5 minutes, texts in English, French, German and Spanish.
 
-[Unreleased]: https://github.com/guim31/gladys-netdata/commits/main
+[Unreleased]: https://github.com/guim31/gladys-netdata/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/guim31/gladys-netdata/releases/tag/v1.0.0
