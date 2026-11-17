@@ -10,6 +10,8 @@ the notes of the version's GitHub Release.
 
 ## [Unreleased]
 
+## [1.0.2] - 2026-11-17
+
 ### Changed
 
 - Integration SDK 0.16.1.
@@ -41,6 +43,7 @@ the notes of the version's GitHub Release.
 - Optional bearer token, self-signed certificates, refresh interval from 30
   seconds to 5 minutes, texts in English, French, German and Spanish.
 
-[Unreleased]: https://github.com/guim31/gladys-netdata/compare/v1.0.1...HEAD
+[Unreleased]: https://github.com/guim31/gladys-netdata/compare/v1.0.2...HEAD
+[1.0.2]: https://github.com/guim31/gladys-netdata/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/guim31/gladys-netdata/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/guim31/gladys-netdata/releases/tag/v1.0.0
